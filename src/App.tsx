@@ -83,7 +83,7 @@ const handleButtonSubmit = () => {
       className="App  flex justify-center min-h-screen w-full bg-cover bg-no-repeat"
       style={{ backgroundImage: `url('/background5.png')` }}
     >
-      <div className="font-ubuntu container w-72 sm:w-auto flex-row justify-center mt-52 h-full bg-gradient-to-b from-blue-500/80 to-purple-900/80  p-8 rounded-2xl shadow-lg shadow-indigo-900/50">
+      <div className="font-ubuntu container w-4/5 sm:w-auto flex-row justify-center mt-52 h-full bg-gradient-to-b from-blue-500/80 to-purple-900/80  p-8 rounded-2xl shadow-lg shadow-indigo-900/50">
         <div className="w-full form border-b-2">
           <h3 className="sm:text-2xl text-lg text-white font-bold mb-4 text-center">
             Confira o clima da sua Cidade:
