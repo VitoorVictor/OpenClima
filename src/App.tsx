@@ -30,6 +30,7 @@ interface WeatherData {
 
 const [city, setCity] = useState<string>('');
 const [weather, setWeather] = useState<WeatherData | null>(null);
+const [errorApi, setErrorApi] = useState<boolean>(false);
 
 //functions
 
@@ -51,9 +52,11 @@ const getWeatherData = async(city:string): Promise<WeatherData> => {
     const data: WeatherData = await res.json();
   
     setWeather(data);
+    setErrorApi(false);
     return data;
   } catch(error){
     setWeather(null);
+    setErrorApi(true);
     console.error('Erro ao buscar dados do clima:', error);
     throw error;
   }
@@ -80,9 +83,9 @@ const handleButtonSubmit = () => {
       className="App  flex justify-center min-h-screen w-full bg-cover bg-no-repeat"
       style={{ backgroundImage: `url('/background5.png')` }}
     >
-      <div className="font-ubuntu container w-auto flex-row justify-center mt-52 h-full bg-gradient-to-b from-blue-500/80 to-purple-900/80  p-8 rounded-2xl shadow-lg shadow-indigo-900/50">
+      <div className="font-ubuntu container w-72 sm:w-auto flex-row justify-center mt-52 h-full bg-gradient-to-b from-blue-500/80 to-purple-900/80  p-8 rounded-2xl shadow-lg shadow-indigo-900/50">
         <div className="w-full form border-b-2">
-          <h3 className="text-2xl text-white font-semibold mb-4">
+          <h3 className="sm:text-2xl text-lg text-white font-bold mb-4 text-center">
             Confira o clima da sua Cidade:
           </h3>
           <div className="flex justify-between mb-8">
@@ -90,14 +93,14 @@ const handleButtonSubmit = () => {
               type="text"
               placeholder="Digite o nome da cidade"
               id="city-input"
-              className="border-gray-300 border rounded-md p-3 pr-12 focus:outline-none"
+              className="border-gray-300 border rounded-md sm:p-3 px-2 py-1 w-44 sm:w-72 mr-1 focus:outline-none"
               onChange={handleInputSearchChange}
               value={city}
               onKeyDown={handleInputSearchKeyDown}
             />
             <button
               id="search"
-              className="relative px-5 py-2 rounded-md bg-cover overflow-hidden group bg-opacity-10"
+              className="relative sm:px-5 sm:py-2 py-1 px-3 rounded-md bg-cover overflow-hidden group bg-opacity-10"
               style={{ backgroundImage: `url('/cloudtexture.png')` }}
               onClick={handleButtonSubmit}
             >
@@ -108,6 +111,13 @@ const handleButtonSubmit = () => {
         </div>
 
         {/* infos */}
+        {errorApi && (
+          <div className="flex justify-center mt-10">
+            <h2 className=" sm:w-72 w-52 sm:text-lg text-red-500 text-center font-bold text-md mb-2">
+              Erro ao consultar os servidores, verifique a ortografia e tente novamente!
+            </h2>
+          </div>
+        )}
 
         {weather && (
           <div className="w-100 weather-data text-white pt-10">
@@ -135,13 +145,13 @@ const handleButtonSubmit = () => {
               />
             </div>
             <div className="details-container flex justify-center items-center">
-              <p id="umidity" className="border-r border-white p-3">
-                <i className="fa-solid fa-droplet"></i>
-                <span>{weather.main.humidity}</span>
+              <p id="umidity" className="border-r-2 border-white py-3 px-5 w-40 text-end">
+                <i className="fa-solid fa-droplet mr-2"></i>
+                <span>{weather.main.humidity} %</span>
               </p>
-              <p id="wind" className="border-l border-white p-3">
-                <i className="fa-solid fa-wind"></i>
-                <span>{weather.wind.speed}</span>
+              <p id="wind" className=" py-3 px-5 w-40 text-start">
+                <i className="fa-solid fa-wind mr-2"></i>
+                <span>{weather.wind.speed} km/h</span>
               </p>
             </div>
           </div>
