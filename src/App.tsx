@@ -1,4 +1,3 @@
-import { log } from 'console';
 import React, { useState } from 'react';
 
 function App() {
@@ -52,7 +51,6 @@ const getWeatherData = async(city:string): Promise<WeatherData> => {
     const data: WeatherData = await res.json();
   
     setWeather(data);
-    console.log(data);
     return data;
   } catch(error){
     setWeather(null);
@@ -64,6 +62,12 @@ const getWeatherData = async(city:string): Promise<WeatherData> => {
 // events
 const handleInputSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   setCity(e.target.value);
+}
+
+const handleInputSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  if (e.key === 'Enter') {
+    handleButtonSubmit();
+  }
 }
 
 const handleButtonSubmit = () => {
@@ -89,13 +93,16 @@ const handleButtonSubmit = () => {
               className="border-gray-300 border rounded-md p-3 pr-12 focus:outline-none"
               onChange={handleInputSearchChange}
               value={city}
+              onKeyDown={handleInputSearchKeyDown}
             />
             <button
               id="search"
-              className=" px-5 py-2 rounded-md bg-orange-500"
+              className="relative px-5 py-2 rounded-md bg-cover overflow-hidden group bg-opacity-10"
+              style={{ backgroundImage: `url('/cloudtexture.png')` }}
               onClick={handleButtonSubmit}
             >
               <i className="fa-solid fa-magnifying-glass text-white"></i>
+              <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-40 transition-opacity duration-300"></div>
             </button>
           </div>
         </div>
@@ -103,41 +110,41 @@ const handleButtonSubmit = () => {
         {/* infos */}
 
         {weather && (
-        <div className="w-100 weather-data text-white pt-10">
-          <h2 className="text-lg flex justify-center items-center font-bold text-xl mb-2">
-            <i className="fa-solid fa-location-dot mx-2"></i>
-            <span id="city" className="mx-2">
-            {weather.name}
-            </span>
-            <img
-              src={`https://flagsapi.com/${weather.sys.country}/flat/32.png`}
-              alt="bandeira do país"
-              id="country"
-              className="mx-2 "
-            />
-          </h2>
-          <p id="temperature" className="py-2 text-center">
-            <span>{weather.main.temp}</span>&deg;C
-          </p>
-          <div className="description-container flex justify-center items-center py-3">
-            <p id="description">{weather.weather[0].description}</p>
-            <img
-              src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}
-              alt="Condições do tempo"
-              id="weather-icon"
-            />
-          </div>
-          <div className="details-container flex justify-center items-center">
-            <p id="umidity" className="border-r border-white p-3">
-              <i className="fa-solid fa-droplet"></i>
-              <span>{weather.main.humidity}</span>
+          <div className="w-100 weather-data text-white pt-10">
+            <h2 className="text-lg flex justify-center items-center font-bold text-xl mb-2">
+              <i className="fa-solid fa-location-dot mx-2"></i>
+              <span id="city" className="mx-2">
+                {weather.name}
+              </span>
+              <img
+                src={`https://flagsapi.com/${weather.sys.country}/flat/32.png`}
+                alt="bandeira do país"
+                id="country"
+                className="mx-2 "
+              />
+            </h2>
+            <p id="temperature" className="py-2 text-center">
+              <span>{weather.main.temp}</span>&deg;C
             </p>
-            <p id="wind" className="border-l border-white p-3">
-              <i className="fa-solid fa-wind"></i>
-              <span>{weather.wind.speed}</span>
-            </p>
+            <div className="description-container flex justify-center items-center py-3">
+              <p id="description">{weather.weather[0].description}</p>
+              <img
+                src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}
+                alt="Condições do tempo"
+                id="weather-icon"
+              />
+            </div>
+            <div className="details-container flex justify-center items-center">
+              <p id="umidity" className="border-r border-white p-3">
+                <i className="fa-solid fa-droplet"></i>
+                <span>{weather.main.humidity}</span>
+              </p>
+              <p id="wind" className="border-l border-white p-3">
+                <i className="fa-solid fa-wind"></i>
+                <span>{weather.wind.speed}</span>
+              </p>
+            </div>
           </div>
-        </div>
         )}
       </div>
     </div>
