@@ -136,7 +136,7 @@ const handleButtonSubmit = () => {
             <p id="temperature" className="py-2 text-center">
               <span>{weather.main.temp}</span>&deg;C
             </p>
-            <div className="description-container flex justify-center items-center py-3">
+            <div className="description-container flex justify-center items-center py-3 capitalize">
               <p id="description">{weather.weather[0].description}</p>
               <img
                 src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}
